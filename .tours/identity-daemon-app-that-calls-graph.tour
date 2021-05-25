@@ -1,0 +1,66 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Identity daemon app that calls graph",
+  "steps": [
+    {
+      "file": "Program.cs",
+      "description": "In order to call Microsoft Graph, we need a client. You can call Graph via the HTTP endpoint, or you can use the `Microsoft.Graph` SDK for a richer experience. We're going to use the Graph SDK today, so let's explore what `GetAuthenticatedGraphClient` actually does. But first, let's go make a few configuration changes.",
+      "line": 22
+    },
+    {
+      "file": "appsettings.json",
+      "description": "The tenant ID is your Azure AD tenant ID (also called a directory). You can get this value from the [Azure AD portal](https://aad.portal.azure.com/), in the Overview screen. This value is the same for all applications created in your directory.",
+      "line": 2,
+      "selection": {
+        "start": {
+          "line": 2,
+          "character": 18
+        },
+        "end": {
+          "line": 2,
+          "character": 37
+        }
+      }
+    },
+    {
+      "file": "appsettings.json",
+      "description": "The Client ID (also known as Application ID) is the unique ID of your application. This is generated when you register an application in Azure AD. It's available from the overview screen for a specific application (AAD portal --> App Registrations --> Find your app --> Overview).",
+      "line": 3
+    },
+    {
+      "file": "appsettings.json",
+      "description": "The client (or application) secret is a credential that, combined with the client ID, is how the application will authenticate to Azure AD. This is a sensitive value and should be protected appropriately. In dotnet, you can use `dotnet user-secrets set AzureAD:ClientSecret THE_CLIENT_SECRET` to protect it locally during development.\r\n\r\nGenerate a secret in the Azure AD portal for a specific application registration, under the 'Secrets & certificates' screen.",
+      "line": 4
+    },
+    {
+      "file": "appsettings.json",
+      "description": "The `targetUserId` setting is specific to this sample - it is the user ID we'll use to fetch mail messages. You can get a user's ID (a GUID) from the Azure AD Portal (Azure AD --> Users --> pick a user --> Properties).",
+      "line": 5
+    },
+    {
+      "file": "Program.cs",
+      "description": "The authority is the Azure AD environment that needs to authenticate you. In this case, it's using `login.microsoftonline.com`, which means we're using Azure AD Global (or Commercial) - the normal Azure AD that most customers use. If you are using Azure China, Azure Government or another regional cloud, these values may be different. See [here](https://docs.microsoft.com/en-us/graph/deployments#app-registration-and-token-service-root-endpoints) for more info.",
+      "line": 72
+    },
+    {
+      "file": "Program.cs",
+      "description": "Next we need to configure our scopes. This `/.default` scope is a special scope, specifically for use in headless scenarios (`client_credentials`, as we are using now, and also on-behalf-of). `/.default` tells Azure AD to issue a token for any configured scopes/permissions - meaning any required permissions need to be configured on the app registration.",
+      "line": 75
+    },
+    {
+      "file": "Program.cs",
+      "description": "Lastly, we create an MSAL instance. This is the `Microsoft.Identity.Client` library for getting tokens from Azure AD.",
+      "line": 77
+    },
+    {
+      "file": "Program.cs",
+      "description": "Now that authentication is configured, we're ready to use our client. In this case, our client is getting a user's email, but skipping the top 40 messages.",
+      "line": 23
+    },
+    {
+      "file": "Program.cs",
+      "description": "Now we've requested the user's mail messages from Graph. The Graph SDK handles working with the MSAL library to fetch tokens, and at this point we should see the user's mail messages printed in console!",
+      "line": 24
+    }
+  ]
+}

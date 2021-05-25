@@ -60,18 +60,18 @@ namespace learn_live_daemon
 
         private static GraphServiceClient GetAuthenticatedGraphClient(IConfigurationRoot config)
         {
-            var authenticationProvider = CreateAuthorizationProvider(config);
+            var authenticationProvider = CreateAuthenticationProvider(config);
             return new GraphServiceClient(authenticationProvider);
         }
 
-        private static IAuthenticationProvider CreateAuthorizationProvider(IConfigurationRoot config)
+        private static IAuthenticationProvider CreateAuthenticationProvider(IConfigurationRoot config)
         {
             var tenantId = config["tenantId"];
             var clientId = config["applicationId"];
             var clientSecret = config["applicationSecret"];
             var authority = $"https://login.microsoftonline.com/{config["tenantId"]}/v2.0";
 
-            List<string> scopes = new List<string>();
+            List<string> scopes = new();
             scopes.Add("https://graph.microsoft.com/.default");
 
             var cca = ConfidentialClientApplicationBuilder.Create(clientId)
